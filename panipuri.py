@@ -114,6 +114,23 @@ def section_content(sentence):
 		label=sentence[sentence.find('[')+1:sentence.find(']')]
 		link=sentence[sentence.find('(')+1:sentence.find(')')]
 		sentence=sentence.replace(sentence[sentence.find('['):sentence.find(')')+1],'\href{'+link+'}{'+label+'}',1)
+	
+	while(sentence.find('~')!=-1):
+		
+		add_package('color')
+		effect=sentence[sentence.find('~')+1:sentence.find(':')]
+		print effect
+		text=sentence[sentence.find(':')+1:sentence[(sentence.find('~')+1):].find('~')+1]
+		print text
+		
+			
+		if(effect=='footnote'):
+			sentence=sentence.replace(sentence[sentence.find('~'):sentence.find(':')],'\\footnote{',1)
+		else:
+			sentence=sentence.replace(sentence[sentence.find('~'):sentence.find(':')],'\color{'+color+'}{',1)
+		
+		sentence=sentence.replace(sentence[sentence.find(':'):sentence.find('~')+1],text+'}',1)
+
 
 
 	tex_body.write(sentence)
