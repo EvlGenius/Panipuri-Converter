@@ -26,7 +26,15 @@ unordered_list.append(OFF)
 list_tab=0
 linenumber=0
 
+
+
 color=['apricot','bittersweet','blue']
+
+effect_name_1=['italic','emphasis','box']
+effect_code_1=['\\textit','\emph','\\fbox']
+
+effect_name_2=['huge','large','abstract','equation']
+
 
 md = open(sys.argv[1],'r')
 tex = open('latex.tex','w+')
@@ -85,8 +93,8 @@ def structure(sentence):
 
 def section_content(sentence):
 
-	sentence=md_effect(sentence,'*','\\textit{','}')
 	sentence=md_effect(sentence,'**','\\textbf{','}')
+	sentence=md_effect(sentence,'*','\\textit{','}')
 	sentence=md_effect(sentence,'<<','\\begin{flushleft}','\end{flusfleft}')
 	sentence=md_effect(sentence,'>>','\\begin{flushright}','\end{flusfright}')
 	sentence=md_effect(sentence,'==','\\begin{center}','\end{center}')
@@ -113,14 +121,42 @@ def section_content(sentence):
 	
 			
 		if(effect=='title'):
-			sentence=tilde_effect(sentence,'','','\\title{',text+'}\maketitle ')
+			if(bluntfile.find('~author')==-1):
+				sentence=tilde_effect(sentence,'','','\\title{',text+'}\maketitle')
+			else:
+				sentence=tilde_effect(sentence,'','','\\title{',text+'}')
+		
+		elif(effect=='author'):
+			sentence=tilde_effect(sentence,'','','\\author{',text+'}\maketitle')
+			
 		
 		elif(effect=='footnote'):
 			sentence=tilde_effect(sentence,'','','\\footnote{',text+'}')
 		
+		elif(effect=='marginnote'):
+			sentence=tilde_effect(sentence,'','marginnote','\marginnote{',text+'}')
+
 		elif(effect in color):
 			sentence=tilde_effect(sentence,'usenames,dvipsnames','color','\color{'+effect+'}{',text+'}')
 		
+		elif(effect in effect_name_1):
+			sentence=tilde_effect(sentence,'','',effect_code_1[effect_name_1.index(effect)]+'{',text+'}')
+
+		elif(effect in effect_name_2):
+			sentence=tilde_effect(sentence,'','','\\begin{'+effect+'}',text+'\end{'+effect+'}')
+
+		elif(effect=='fraction'):
+			index=text.find('/')
+			if(index==-1):
+				print 'error'
+			else:
+				sentence=tilde_effect(sentence,'','','$\\frac{',text[:index]+'}{'+text[index+1:]+'}$')
+
+		elif(effect=='square root' or effect=='sqrt'):
+			sentence=tilde_effect(sentence,'','','$$\\sqrt{',text+'}$$')
+			
+
+
 		elif(effect[:1]=='#' and len(effect)==7):
 			
 			effect=effect[1:]
@@ -257,10 +293,10 @@ def add_package(option,package):
 
 #main
 
+bluntfile=md.read()
+md.seek(0)
 mdfile=md.readlines()+['\n\n']
 md.seek(0)
-
-
 
 for line in md.readlines()+['\n\n']:
 
@@ -283,7 +319,7 @@ for line in md.readlines()+['\n\n']:
 	if(sentence.count('|') and line_effect_virgin):
 		
 		sentence=slicer(sentence,'|')
-		nextsentence=row_slicer(mdfile[linenumber])
+		nextsentence=slicer(mdfile[linenumber],'|')
 
 		
 		if(table_head==ON):
