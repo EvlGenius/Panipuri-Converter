@@ -1,0 +1,17 @@
+#!/usr/bin/python
+
+import os
+
+print '...Installing texlive...'
+os.system('sudo apt-get install texlive-latex-base')
+print 'Done!!!\n'
+
+print '...Preparing md2tex...'
+os.system('sudo cp md2tex /usr/bin')
+print 'Done\n'
+
+print '...Preparing ManPage...'
+os.system('sudo cp md2tex.1.gz /usr/share/man/man1')
+print 'Done\n'
+
+print '...Complete...'
