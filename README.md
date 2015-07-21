@@ -21,13 +21,13 @@ Examples:
 * ~ import code : imports_code.py ~
 
 
-Seethe list of effects in data.py. LaTeX code works fine while writing Markdown codes too so writing Tex syntax in the md file is possible.
+See the list of effects in data.py. LaTeX code works fine while writing Markdown codes too so writing Tex syntax in the md file is possible.
 
 ----
 
-#How to Run
-Clone this shit to ur computer. Write ur stuffs in a_file.md. Then step in the following codes.
+#Installation and Use
 
+    $ git clone https://github.com/prtx/MD_LaTeX_Converter
     $ python md2tex a_file.md a_file.tex article
 
 ------
