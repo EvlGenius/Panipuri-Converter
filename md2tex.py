@@ -349,7 +349,7 @@ md = open(sys.argv[1],'r')
 tex = open(sys.argv[2],'w+')
 tex_body = open('latexbody.tex','w+')
 
-tex.write('\documentclass[12pt]{'+doc_class+'}\n\n')
+tex.write('\documentclass[12pt]{'+doc_class+'}\n\usepackage[margin=1.25in]{geometry}\n\n')
 tex.write('%packages\n')
 
 tex_body.write('\\begin{document}\n')
@@ -372,13 +372,10 @@ for sentence in md_file:
 	linenumber += 1
 	line_effect_virgin = True
 
-	#
 
 	if(sentence[0]=='#'):
 		structure(sentence)
 		line_effect_virgin = False
-	
-	#
 
 	if(sentence.count('|') and line_effect_virgin):
 		
@@ -402,17 +399,14 @@ for sentence in md_file:
 		tex_body.write('\hline\n\end{tabular}\n')
 		table_active = table_head_active = False
 
-	#
 	
 	if(line_effect_virgin):
 		line_effect_virgin = list_structure(sentence)
 
-	#
+	
 	if(line_effect_virgin):
 		tex_body.write(sentence)
 	
-	#
-
 
 tex_body.seek(0)
 content = tex_body.read()
@@ -432,7 +426,7 @@ tex.close()
 tex_body.close()
 os.system('rm latexbody.tex')
 
-if 'fatal error' in subprocess.check_output(['pdflatex -halt-on-error '+sys.argv[2]], shell=True).lower()
+if 'fatal error' in subprocess.check_output(['pdflatex -halt-on-error '+sys.argv[2]], shell=True).lower():
 	error_message('Fatal Error',None)
 	
 
@@ -440,4 +434,3 @@ if(program_error):
 	print '\n...Converted With Error...\n'
 else:
 	print '\n...Converted Successfully...\n'
-######END#########
